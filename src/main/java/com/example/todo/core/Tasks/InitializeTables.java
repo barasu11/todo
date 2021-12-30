@@ -1,5 +1,6 @@
 package com.example.todo.core.Tasks;
 
+import com.example.todo.constants.Constants;
 import com.example.todo.core.BasicServiceLocator.BasicServiceLocator;
 import com.example.todo.core.Database.DatabaseProviders;
 import com.example.todo.core.Database.Implementations.DatabaseService;
@@ -19,9 +20,9 @@ public class InitializeTables extends HttpServlet {
     public void init() throws ServletException {
         DatabaseService service = (DatabaseService) BasicServiceLocator.I.get().get(DatabaseService.class);
         service.initialize();
-        service.createTable("users", new HashMap<String, String>() {{
-            put("username", "TEXT");
-            put("password", "TEXT");
+        service.createTable(Constants.DATABASE.USERS, new HashMap<String, String>() {{
+            put(Constants.DATABASE.USER_NAME, Constants.DATABASE.TEXT);
+            put(Constants.DATABASE.PASSWORD, Constants.DATABASE.TEXT);
         }});
     }
 

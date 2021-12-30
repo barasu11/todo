@@ -1,11 +1,13 @@
 package com.example.todo.core.Tasks;
 
+import com.example.todo.constants.Constants;
 import com.example.todo.core.BasicServiceLocator.BasicServiceLocator;
 import com.example.todo.core.Database.DatabaseProviders;
 import com.example.todo.core.Database.Implementations.DatabaseService;
 import com.example.todo.core.Database.Interfaces.IDatabase;
 import com.example.todo.core.Database.Interfaces.IDatabaseConfiguration;
-import com.example.todo.features.Login.UserRepository;
+import com.example.todo.features.Login.LoginRepository;
+import com.example.todo.features.Signup.SignupRepository;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,12 +22,12 @@ public class RegisterServices extends HttpServlet {
         serviceLocator.add(DatabaseService.I.apply(new IDatabaseConfiguration() {
             @Override
             public String getDatabaseName() {
-                return "todos";
+                return Constants.DATABASE.DATABASE_NAME;
             }
 
             @Override
             public String getDatabaseUri() {
-                return "C:\\Examples\\todo\\src\\main\\resources\\";
+                return Constants.DATABASE.DATABASE_PATH;
             }
 
             @Override
@@ -44,6 +46,7 @@ public class RegisterServices extends HttpServlet {
             }
         }));
 
-        serviceLocator.add(new UserRepository((IDatabase) serviceLocator.get(DatabaseService.class)));
+        serviceLocator.add(new LoginRepository((IDatabase) serviceLocator.get(DatabaseService.class)));
+        serviceLocator.add(new SignupRepository((IDatabase) serviceLocator.get(DatabaseService.class)));
     }
 }

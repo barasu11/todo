@@ -1,7 +1,7 @@
 package com.example.todo.features.Login;
 
 import com.example.todo.core.BasicServiceLocator.BasicServiceLocator;
-import com.example.todo.features.Login.Model.User;
+import com.example.todo.features.Shared.Model.User;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -26,15 +26,18 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         if ((username != null && !username.trim().equals("")) && (password != null && !password.trim().equals(""))) {
-            UserRepository repository = (UserRepository) BasicServiceLocator.I.get().get(UserRepository.class);
+            LoginRepository repository = (LoginRepository) BasicServiceLocator.I.get().get(LoginRepository.class);
             User user = new User(username, password);
             boolean loggedIn = repository.login(user);
             if (loggedIn) {
                 request.getSession().setAttribute("user", user);
+                request.getSession().setAttribute("loggedIn", true);
                 response.sendRedirect("https://infor.com");
                 return;
             } else {
-                response.sendRedirect("https://google.com");
+                request.getSession().setAttribute("loggedIn", false);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/home/home.jsp");
+                dispatcher.forward(request, response);
                 return;
             }
         }

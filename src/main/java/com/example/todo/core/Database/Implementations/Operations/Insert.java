@@ -41,7 +41,7 @@ public class Insert {
                 String colName = md.getColumnName(i);
                 if (colName.equalsIgnoreCase("_id")) continue;
                 int colType = md.getColumnType(i);
-                if (colType == 1) {
+                if (colType == 1 || colType == 12) {
                     insertPrepStatement.setString(i, values.get(colName));
                 } else if (colType == 4) {
                     insertPrepStatement.setInt(i, Integer.parseInt(values.get(colName)));

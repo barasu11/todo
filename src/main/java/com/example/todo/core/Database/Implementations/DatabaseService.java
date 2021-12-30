@@ -42,6 +42,12 @@ public class DatabaseService implements IDatabase {
     @Override
     public void initialize() {
         String source = "jdbc:" + this.databaseProvider.toString().toLowerCase() + ":" + this.databaseUri + this.resolveTableName();
+        try{
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Driver could not be loaded");
+        }
         try {
             this.connection = DriverManager.getConnection(source);
             System.out.println("Connection established successfully.....");
