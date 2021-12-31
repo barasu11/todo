@@ -58,6 +58,9 @@
 </head>
 
 <body>
+<script>
+    history.forward();
+</script>
 <h1>Create a Todo List with Ease</h1>
 <div class="login">
     <form action="LoginServlet" method="POST">

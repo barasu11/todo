@@ -4,8 +4,6 @@ import com.example.todo.constants.Constants;
 import com.example.todo.core.Database.Interfaces.IDatabase;
 import com.example.todo.features.Shared.Model.User;
 
-import java.sql.SQLException;
-
 public class SignupRepository {
     public SignupRepository(IDatabase database) {
         this.database = database;
@@ -14,6 +12,6 @@ public class SignupRepository {
     private final IDatabase database;
 
     boolean register(User user) {
-        return this.database.insert(Constants.DATABASE.USERS, user.toMap()) > 0;
+        return this.database.insert(Constants.DATABASE.TABLE_USERS, user.toMap()) > 0;
     }
 }

@@ -5,7 +5,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
+/**
+ * Creates Table
+ */
 public class CreateTable {
+    /**
+     * Accepts Connection, table name and fields
+     *
+     * @param connection
+     * @param tableName
+     * @param fields
+     */
     public CreateTable(Connection connection, String tableName, Map<String, String> fields) {
         this.tableName = tableName;
         this.fields = fields;
@@ -23,9 +33,7 @@ public class CreateTable {
         }
         try (Statement st = this.connection.createStatement()) {
             StringBuilder builder = new StringBuilder();
-            fields.entrySet().stream().map(entry -> {
-                return entry;
-            }).forEach(entry -> { //create table(col1 dataType, col2 dataType)
+            fields.entrySet().stream().forEach(entry -> {
                 builder
                         .append(entry.getKey())
                         .append(" ")
@@ -33,7 +41,7 @@ public class CreateTable {
                         .append(", ");
             });
             builder.append("_id INTEGER PRIMARY KEY NOT NULL");
-            String cleanedQuery = builder.toString();/*.replaceAll("[,][\\s]$", "");*/
+            String cleanedQuery = builder.toString();
             String query = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + cleanedQuery + ")";
             st.executeUpdate(query);
         } catch (SQLException e) {

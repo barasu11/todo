@@ -1,11 +1,25 @@
 package com.example.todo.core.Database.Implementations.Operations;
 
 import java.sql.*;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+
+/**
+ * Finds data from table based on conditions
+ */
 public class Find {
+
+    /**
+     * Requires connection, table name and conditions
+     *
+     * @param connection
+     * @param tableName
+     * @param options
+     */
     public Find(Connection connection, String tableName, Map<String, String> options) {
         this.connection = connection;
         this.tableName = tableName;
@@ -29,14 +43,6 @@ public class Find {
                     andCounter++;
                 }
             }
-//            entries.stream().forEach(entry -> {
-//                if ((entry.getValue() != null && !entry.getValue().trim().equals(""))
-//                        && (entry.getKey() != null && !entry.getKey().trim().equals(""))) {
-//                    if (entries. > 0) whereClause.append("AND ");
-//                    whereClause.append(entry.getKey() + " = \"" + entry.getValue() + "\" ");
-//                    andCounter.getAndIncrement();
-//                }
-//            });
         }
         try (Statement st = this.connection.createStatement()) {
             String queryBuilder = "SELECT * FROM " + tableName + " " +

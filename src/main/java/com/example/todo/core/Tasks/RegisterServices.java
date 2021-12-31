@@ -8,18 +8,25 @@ import com.example.todo.core.Database.Interfaces.IDatabase;
 import com.example.todo.core.Database.Interfaces.IDatabaseConfiguration;
 import com.example.todo.features.Login.LoginRepository;
 import com.example.todo.features.Signup.SignupRepository;
+import com.example.todo.features.Todo.TodoRepository;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+/**
+ * This class is responsible for registering service
+ * to be accessible
+ */
 public class RegisterServices extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         BasicServiceLocator serviceLocator = BasicServiceLocator.I.get();
 
         ///Registering Services to make it globally available
-        serviceLocator.add(DatabaseService.I.apply(new IDatabaseConfiguration() {
+
+        //Registering Database
+        serviceLocator.register(DatabaseService.I.apply(new IDatabaseConfiguration() {
             @Override
             public String getDatabaseName() {
                 return Constants.DATABASE.DATABASE_NAME;
@@ -46,7 +53,13 @@ public class RegisterServices extends HttpServlet {
             }
         }));
 
-        serviceLocator.add(new LoginRepository((IDatabase) serviceLocator.get(DatabaseService.class)));
-        serviceLocator.add(new SignupRepository((IDatabase) serviceLocator.get(DatabaseService.class)));
+        //Registering Login Repository
+        serviceLocator.register(new LoginRepository((IDatabase) serviceLocator.retrieve(DatabaseService.class)));
+
+        //Registering Signup Repository
+        serviceLocator.register(new SignupRepository((IDatabase) serviceLocator.retrieve(DatabaseService.class)));
+
+        //Registering Todo Repository
+        serviceLocator.register(new TodoRepository((IDatabase) serviceLocator.retrieve(DatabaseService.class)));
     }
 }

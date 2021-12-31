@@ -1,9 +1,11 @@
 package com.example.todo.features.Login;
 
+import com.example.todo.constants.Constants;
 import com.example.todo.core.Database.Interfaces.IDatabase;
 import com.example.todo.features.Shared.Model.User;
 
-import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class LoginRepository {
     public LoginRepository(IDatabase database) {
@@ -15,7 +17,12 @@ public class LoginRepository {
 
 
     boolean login(User user) {
-        loggedIn = this.database.find("users", user.toMap()).size() > 0;
+        List<Map<String, Object>> list = (List<Map<String, Object>>) this.database.find(Constants.DATABASE.TABLE_USERS, user.toMap());
+        if (list.size() > 0) {
+            Map<String, Object> userMap = list.get(0);
+            user.setId(userMap.get(Constants.DATABASE.ID).toString());
+            loggedIn = list.size() > 0;
+        }
         return this.loggedIn;
     }
 

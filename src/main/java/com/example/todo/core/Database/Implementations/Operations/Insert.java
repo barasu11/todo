@@ -6,7 +6,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Map;
 
+/**
+ * Inserts data into table
+ */
 public class Insert {
+    /**
+     * Requires connection, table name and values
+     * @param connection
+     * @param tableName
+     * @param values
+     */
     public Insert(Connection connection, String tableName, Map<String, String> values) {
         this.connection = connection;
         this.tableName = tableName;
@@ -20,9 +29,7 @@ public class Insert {
     public int exec() throws SQLException {
         StringBuilder col = new StringBuilder();
         StringBuilder val = new StringBuilder();
-        values.entrySet().stream().map(entry -> {
-            return entry;
-        }).forEach(entry -> { //create table(col1 dataType, col2 dataType)
+        values.entrySet().stream().forEach(entry -> {
             col
                     .append(entry.getKey())
                     .append(" ")

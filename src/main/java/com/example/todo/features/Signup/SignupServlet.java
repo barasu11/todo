@@ -16,11 +16,11 @@ import java.io.IOException;
 public class SignupServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter(Constants.INPUTFIELD.USER_NAME);
-        String password = request.getParameter(Constants.INPUTFIELD.PASSWORD);
+        String username = request.getParameter(Constants.ATTRIBUTES.USER_NAME);
+        String password = request.getParameter(Constants.ATTRIBUTES.PASSWORD);
 
         if ((username != null && !username.trim().equals("")) && (password != null && !password.trim().equals(""))) {
-            SignupRepository repository = (SignupRepository) BasicServiceLocator.I.get().get(SignupRepository.class);
+            SignupRepository repository = (SignupRepository) BasicServiceLocator.I.get().retrieve(SignupRepository.class);
             User user = new User(username, password);
             boolean registered = repository.register(user);
             if (registered) {

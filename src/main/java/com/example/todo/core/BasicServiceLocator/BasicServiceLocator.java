@@ -2,9 +2,13 @@ package com.example.todo.core.BasicServiceLocator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
+
+/**
+ * Service Locator
+ * This class provides object's of requested class on the fly
+ */
 public class BasicServiceLocator {
 
     private BasicServiceLocator() {
@@ -22,12 +26,21 @@ public class BasicServiceLocator {
         return serviceLocator;
     };
 
-    public void add(Object obj) {
+    /**
+     * Registers a service
+     * @param obj
+     */
+    public void register(Object obj) {
         if (obj != null)
             services.add(obj);
     }
 
-    public Object get(Class c) {
+    /**
+     * Retrieves a service
+     * @param c
+     * @return
+     */
+    public Object retrieve(Class c) {
         for (Object service : services) {
             if (service.getClass() == c) {
                 return service;

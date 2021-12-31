@@ -1,5 +1,6 @@
 package com.example.todo.features.Login;
 
+import com.example.todo.constants.Constants;
 import com.example.todo.core.BasicServiceLocator.BasicServiceLocator;
 import com.example.todo.features.Shared.Model.User;
 
@@ -12,34 +13,29 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /**
-         * username = request.getParams("username")
-         * password = request.getParams("username")
-         *
-         * validate against database and return a view based on it
-         */
+        return;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username = request.getParameter(Constants.ATTRIBUTES.USER_NAME);
+        String password = request.getParameter(Constants.ATTRIBUTES.PASSWORD);
 
         if ((username != null && !username.trim().equals("")) && (password != null && !password.trim().equals(""))) {
-            LoginRepository repository = (LoginRepository) BasicServiceLocator.I.get().get(LoginRepository.class);
+            LoginRepository repository = (LoginRepository) BasicServiceLocator.I.get().retrieve(LoginRepository.class);
             User user = new User(username, password);
             boolean loggedIn = repository.login(user);
             if (loggedIn) {
-                request.getSession().setAttribute("user", user);
-                request.getSession().setAttribute("loggedIn", true);
-                response.sendRedirect("https://infor.com");
-                return;
+                request.getSession().setAttribute(Constants.ATTRIBUTES.USER, user);
+                request.getSession().setAttribute(Constants.ATTRIBUTES.LOGGED_IN, true);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/todos/todos.jsp");
+                dispatcher.forward(request, response);
             } else {
-                request.getSession().setAttribute("loggedIn", false);
+                request.getSession().setAttribute(Constants.ATTRIBUTES.LOGGED_IN, false);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/home/home.jsp");
                 dispatcher.forward(request, response);
-                return;
             }
+            return;
         }
     }
 }
